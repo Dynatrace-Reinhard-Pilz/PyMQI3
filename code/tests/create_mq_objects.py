@@ -23,9 +23,9 @@ START LISTENER(TCP.LISTENER.1)
                     for qname in config.MQ.QUEUE.QUEUE_NAMES.values() ])
 
 
-print "Creating all MQ Objects required to run the test.\n"
+print ("Creating all MQ Objects required to run the test.\n")
 
-print "Checking if Queue Manager %s exists.\n" % config.MQ.QM.NAME
+print ("Checking if Queue Manager %s exists.\n" % config.MQ.QM.NAME)
 dspmq_proc = subprocess.Popen(
     ["dspmq", "-m%s" % config.MQ.QM.NAME], stdout=subprocess.PIPE,
     stderr=subprocess.PIPE)
@@ -41,24 +41,24 @@ if dspmq_proc.returncode == 72:
     if crtmqm_proc.returncode != 0:
         print ("Error Occured while creating Queue Manager %s.\n" %
                config.MQ.QM.NAME)
-        print "-" * len(crtmqm_error) + "\n"
-        print crtmqm_error
-        print "-" * len(crtmqm_error) + "\n"
-        print "Failed to setup MQ Enviromment!\n"
+        print ("-" * len(crtmqm_error) + "\n")
+        print (crtmqm_error)
+        print ("-" * len(crtmqm_error) + "\n")
+        print ("Failed to setup MQ Enviromment!\n")
         sys.exit(1)
-    print "Queue manager %s created.\n" % config.MQ.QM.NAME
+    print ("Queue manager %s created.\n" % config.MQ.QM.NAME)
 else:
     if dspmq_proc.returncode == 0:
-        print "Queue Manager %s exists.\n" % config.MQ.QM.NAME
-        print "-" * len(dspmq_output) + "\n"
-        print dspmq_output
-        print "-" * len(dspmq_output) + "\n"
+        print ("Queue Manager %s exists.\n" % config.MQ.QM.NAME)
+        print ("-" * len(dspmq_output) + "\n")
+        print (dspmq_output)
+        print ("-" * len(dspmq_output) + "\n")
     else:
-        print "Error Occured\n"
-        print "-" * len(dspmq_error) + "\n"
-        print dspmq_error
-        print "-" * len(dspmq_error) + "\n"
-        print "Failed to setup MQ Enviromment!\n"
+        print ("Error Occured\n")
+        print ("-" * len(dspmq_error) + "\n")
+        print (dspmq_error)
+        print ("-" * len(dspmq_error) + "\n")
+        print ("Failed to setup MQ Enviromment!\n")
         sys.exit(1)
 
 strmqm_proc = subprocess.Popen(
@@ -67,29 +67,29 @@ strmqm_proc = subprocess.Popen(
 strmqm_output, strmqm_error = strmqm_proc.communicate()
 
 if strmqm_proc.returncode == 5:
-    print strmqm_error
+    print (strmqm_error)
 else:
     if strmqm_proc.returncode != 0:
-        print "Error.  Could not start Queue Manager."
-        print "-" * len(strmqm_error) + "\n"
-        print strmqm_error
-        print "-" * len(strmqm_error) + "\n"
+        print ("Error.  Could not start Queue Manager.")
+        print ("-" * len(strmqm_error) + "\n")
+        print (strmqm_error)
+        print ("-" * len(strmqm_error) + "\n")
         sys.exit(1)
 
 time.sleep(2)
 
-print "Creating MQ Objects."
+print ("Creating MQ Objects.")
 runmqsc_proc = subprocess.Popen(["runmqsc", config.MQ.QM.NAME],
                                 stdout=subprocess.PIPE, stdin=subprocess.PIPE,
                                 stderr=subprocess.PIPE)
-runmqsc_output, runmqsc_error = runmqsc_proc.communicate(mqsc_script)
-print "-" * 80 + "\n"
-print runmqsc_output
-print "-" * 80 + "\n"
+runmqsc_output, runmqsc_error = runmqsc_proc.communicate(bytes(mqsc_script, "UTF-8"))
+print ("-" * 80 + "\n")
+print (runmqsc_output)
+print ("-" * 80 + "\n")
 if runmqsc_proc.returncode not in (0, 10):
-    print "Creation of MQ Objects not successful."
-    print "-" * 80 + "\n"
-    print runmqsc_error
-    print "-" * 80 + "\n"
+    print ("Creation of MQ Objects not successful.")
+    print ("-" * 80 + "\n")
+    print (runmqsc_error)
+    print( "-" * 80 + "\n")
 
-print "MQ Environment Created.  Ready for tests.\n"
+print ("MQ Environment Created.  Ready for tests.\n")

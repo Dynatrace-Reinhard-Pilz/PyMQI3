@@ -63,12 +63,11 @@ class TestRFH2PutGet(unittest.TestCase):
         try:
             while(1):
                 queue.get()
-        except Exception, e:
+        except Exception as e:
             if e.reason == 2033:
                 return
             else:
                 raise e
-
 
     def test_get_rfh2_single(self):
         """Use get_rfh2 to get a known correct 3rd party message that contains a single RFH2 header.
@@ -105,11 +104,10 @@ class TestRFH2PutGet(unittest.TestCase):
             self.assertEqual(rfh2["mcdLength"], 28, "mcdLength has incorrect value. Should be: %i But is: %s" % (28, str(rfh2["mcdLength"])))
             self.assertEqual(rfh2["mcd"], "<mcd><Msd>xmlnsc</Msd></mcd>", "mcd has incorrect value. Should be: %s But is: %s" % ("<mcd><Msd>xmlnsc</Msd></mcd>", str(rfh2["mcd"])))
 
-            self.assertEqual(msg, self.single_rfh2_message[rfh2["StrucLength"]:], "Message Payloads do not match?")
-        except Exception, e:
+            self.assertEqual(msg, self.single_rfh2_message[rfh2["StrucLength"]:].decode(), "Message Payloads do not match?")
+        except Exception as e:
             self.fail(e)
-
-
+            
     def test_get_rfh2_multiple(self):
         """Use get_rfh2 to get a known correct 3rd party message containing Multiples RFH2 headers.
         """
@@ -162,16 +160,15 @@ class TestRFH2PutGet(unittest.TestCase):
             self.assertEqual(rfh2_2["mcd"], "<mcd><Msd>xmlnsc</Msd></mcd>", "mcd has incorrect value. Should be: %s But is: %s" % ("<mcd><Msd>xmlnsc</Msd></mcd>", str(rfh2_2["mcd"])))
 
 
-            self.assertEqual(msg, self.multiple_rfh2_message[rfh2_1["StrucLength"] + rfh2_2["StrucLength"]:], "Message Payloads do not match?")
+            self.assertEqual(msg, self.multiple_rfh2_message[rfh2_1["StrucLength"] + rfh2_2["StrucLength"]:].decode(), "Message Payloads do not match?")
 
-        except Exception, e:
+        except Exception as e:
             self.fail(e)
 
     def test_put_rfh2_single(self):
         """Create and put a new rfh2 and use get to get it from the queue.  Compare it against know correct message.
         """
         try:
-
             put_mqmd = pymqi.md()
             put_mqmd["Format"] = CMQC.MQFMT_RF_HEADER_2
             put_mqmd["Encoding"] = 273
@@ -199,7 +196,7 @@ class TestRFH2PutGet(unittest.TestCase):
             get_msg = self.get_queue.get(None, get_mqmd, get_opts)
 
             self.assertEqual(get_msg, self.single_rfh2_message, "Message got from Queue does not match known correct RFH2 message.")
-        except Exception, e:
+        except Exception as e:
             self.fail(e)
 
     def test_put_rfh2_multiple(self):
@@ -249,7 +246,7 @@ class TestRFH2PutGet(unittest.TestCase):
 
             self.assertEqual(get_msg, self.multiple_rfh2_message, "Message got from Queue does not match known correct RFH2 message.")
 
-        except Exception, e:
+        except Exception as e:
             self.fail(e)
 
     def test_put_get_rfh2_single(self):
@@ -290,7 +287,7 @@ class TestRFH2PutGet(unittest.TestCase):
             self.assertEqual(get_rfh2_list[0].get(), put_rfh2_list[0].get()), "Put and Get RFH2 Lists do not match."
             self.assertEqual(get_msg, put_msg, "Put and Get messages do not match.")
 
-        except Exception, e:
+        except Exception as e:
             self.fail(e)
 
     def test_put_get_rfh2_multiple(self):
@@ -337,6 +334,7 @@ class TestRFH2PutGet(unittest.TestCase):
             get_mqmd = pymqi.md()
             get_opts = pymqi.gmo()
             get_rfh2_list = []
+            get_opts.set_debug(True)
             get_msg = self.get_queue.get_rfh2(None, get_mqmd, get_opts, get_rfh2_list)
 
             self.assertEqual(len(get_rfh2_list), len(put_rfh2_list), "Number of RFH2's incorrect.  Should be %i.  But is %i" % (len(get_rfh2_list), len(put_rfh2_list)))
@@ -344,9 +342,8 @@ class TestRFH2PutGet(unittest.TestCase):
             self.assertEqual(get_rfh2_list[1].get(), put_rfh2_list[1].get()), "Put and Get RFH2 Lists do not match."
             self.assertEqual(get_msg, put_msg, "Put and Get messages do not match.")
 
-        except Exception, e:
+        except Exception as e:
             self.fail(e)
-
 
 if __name__ == '__main__':
     unittest.main()

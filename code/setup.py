@@ -120,7 +120,7 @@ if build_server:
 else:
     print("Building PyMQI client %sbits" % bits)
 
-setup(name = 'pymqi',
+setup(name = 'pymqi3',
     version = version,
     description = 'Python IBM MQI Extension for WebSphere MQ (formerly known as MQSeries).',
     long_description= 'PyMQI is a Python library for working with WebSphere MQ (formerly known as MQSeries) implementing MQI and PCF protocols.',
@@ -145,8 +145,8 @@ setup(name = 'pymqi',
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Software Development :: Object Brokering',
         ],
-    py_modules = ['pymqi.CMQC', 'pymqi.CMQCFC', 'pymqi.CMQXC', 'pymqi.CMQZC'],
-    ext_modules = [Extension('pymqi.pymqe',['pymqi/pymqe.c'],
+    py_modules = ['pymqi.CMQC', 'pymqi.CMQCFC', 'pymqi3.CMQXC', 'pymqi.CMQZC'],
+    ext_modules = [Extension('pymqi.pymqe', sources = ['pymqi/pymqe.c'],
             define_macros=[('PYQMI_SERVERBUILD', build_server)],
         library_dirs = library_dirs,
         include_dirs = include_dirs,

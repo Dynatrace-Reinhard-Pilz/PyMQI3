@@ -10,12 +10,12 @@ class MQ:
 
     # Queue manager connection setup
     class QM:
-        NAME = os.environ.get('PYMQI_TEST_QM_NAME', 'QM01')
+        NAME = os.environ.get('PYMQI_TEST_QM_NAME', 'QM1')
         HOST = os.environ.get('PYMQI_TEST_QM_HOST', '127.0.0.1')
-        PORT = os.environ.get('PYMQI_TEST_QM_PORT', '31414')
-        CHANNEL = os.environ.get('PYMQI_TEST_QM_CHANNEL', 'SVRCONN.1')
-        USER = os.environ.get('PYMQI_TEST_QM_USER', 'myuser')
-        PASSWORD = os.environ.get('PYMQI_TEST_QM_PASSWORD', 'mypassword')
+        PORT = os.environ.get('PYMQI_TEST_QM_PORT', '1414')
+        CHANNEL = os.environ.get('PYMQI_TEST_QM_CHANNEL', 'SYSTEM.ADMIN.SVRCONN')
+        USER = os.environ.get('PYMQI_TEST_QM_USER', 'reinhard')
+        PASSWORD = os.environ.get('PYMQI_TEST_QM_PASSWORD', 'winona00')
 
     # Queue naming setup
     class QUEUE:
