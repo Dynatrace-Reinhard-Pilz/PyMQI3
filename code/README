@@ -1,6 +1,10 @@
 
-PyMQI - Python interface to WebSphere MQ (MQSeries)
+Py3MQI - Python 3 interface to WebSphere MQ (MQSeries)
 -------------------------------------------------------
+
+This Project is pymqi ported to Python 3.5.2
+
+
 
 **Sponsored by [Zato](https://zato.io/docs?pymqi-docs) - ESB, SOA, REST, APIs and Cloud Integrations in Python**
 
