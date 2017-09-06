@@ -88,15 +88,20 @@ an instance of a PCFExecute object.
 
 Pymqi is thread safe. Pymqi objects have the same thread scope as
 their MQI counterparts.
-
-"""
 """
 import os
 import sys
+import imp
+sys.path.append(os.path.dirname(__file__))
+f, filename, description = imp.find_module('pymqe', [ os.path.dirname(__file__) ])
+pymqe = imp.load_module('pymqe', f, filename, description)
+f, filename, description = imp.find_module('CMQC', [ os.path.dirname(__file__) ])
+CMQC = imp.load_module('CMQC', f, filename, description)
+f, filename, description = imp.find_module('CMQCFC', [ os.path.dirname(__file__) ])
+CMQCFC = imp.load_module('CMQCFC', f, filename, description)
+f, filename, description = imp.find_module('CMQXC', [ os.path.dirname(__file__) ])
+CMQXC = imp.load_module('CMQXC', f, filename, description)
 
-sys.path.append("/usr/local/lib/python3.5/dist-packages/pymqi-1.6.0-py3.5-linux-x86_64.egg/pymqi/pymqe.cpython-35m-x86_64-linux-gnu.so")
-sys.path.append("/usr/local/lib/python3.5/dist-packages/pymqi-1.6.0-py3.5-linux-x86_64.egg/pymqi")
-"""
 # Stdlib
 import struct
 import types
@@ -217,8 +222,6 @@ class MQOpts(object):
         calls. The pack order is as defined to the MQOpts
         ctor. Returns the structure as a string buffer"""
         
-        print("------ pack ---------")
-
         # Build tuple for struct.pack() argument. Start with format
         # string.
         #args = [self.__format.encode()]
@@ -755,9 +758,6 @@ class RFH2(MQOpts):
             s = s[4:]
             #extract the folder string
             folder_data = s[:folder_length].decode()
-            print("##################")
-            print(folder_data)
-            print("##################")
             #check that the folder is valid xml and get the root tag name
             folder_name = None
             #check that the folder is valid xml and get the root tag name.
@@ -777,7 +777,6 @@ class RFH2(MQOpts):
             #append folder length and folder string to self.opts types
             self.opts.append([folder_name + "Length", int(folder_length),
                               MQLONG_TYPE])
-            print("##################: self.opts.append([" + folder_name + ", " + folder_data + ", %is" % folder_length + "])")
             self.opts.append([folder_name, folder_data, "%is" %
                               folder_length])
             #move on past the folder
